@@ -5,7 +5,7 @@ pipeline {
    environment {
        VENV_DIR = 'venv'
        GCP_PROJECT = 'mlops-project-1809'
-       GCLOUD_PATH = '/var/jenkins_home/google-cloud-sdk/bin'
+       GCLOUD_PATH = '/google-cloud-sdk/bin'
    }
 
 
@@ -50,21 +50,15 @@ pipeline {
                        sh '''
                            export PATH=$PATH:${GCLOUD_PATH}
 
-
                            gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}
-
 
                            gcloud config set project ${GCP_PROJECT}
 
-
                            gcloud auth configure-docker --quiet
-
 
                            IMAGE_NAME=gcr.io/${GCP_PROJECT}/ml-project:latest
 
-
                            docker build -t $IMAGE_NAME .
-
 
                            docker push $IMAGE_NAME
                        '''
@@ -82,15 +76,11 @@ pipeline {
                        sh '''
                            export PATH=$PATH:${GCLOUD_PATH}
 
-
                            gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}
-
 
                            gcloud config set project ${GCP_PROJECT}
 
-
                            IMAGE_NAME=gcr.io/${GCP_PROJECT}/ml-project:latest
-
 
                            gcloud run deploy ml-project \
                                --image=$IMAGE_NAME \

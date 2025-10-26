@@ -4,7 +4,7 @@ pipeline {
 
    environment {
        VENV_DIR = 'venv'
-       GCP_PROJECT = 'sublime-command-472712-n4'
+       GCP_PROJECT = 'mlops-project-1809'
        GCLOUD_PATH = '/var/jenkins_home/google-cloud-sdk/bin'
    }
 
@@ -18,8 +18,8 @@ pipeline {
                        branches: [[name: '*/main']],
                        extensions: [],
                        userRemoteConfigs: [[
-                           credentialsId: 'github-token',
-                           url: 'https://github.com/daoducan/mlops-project.git'
+                           credentialsId: 'jenkins-github-token',
+                           url: 'https://github.com/andd-1809/MLOPS-COURSE-PROJECT-01.git'
                        ]]
                    )
                }
@@ -44,7 +44,7 @@ pipeline {
 
        stage('Building and Pushing Docker Image to GCR') {
            steps {
-               withCredentials([file(credentialsId: 'gcp-key', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
+               withCredentials([file(credentialsId: 'gcp-key-prj2', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
                    script {
                        echo 'Building and Pushing Docker Image to GCR............'
                        sh '''
@@ -76,7 +76,7 @@ pipeline {
 
        stage('Deploy to Google Cloud Run') {
            steps {
-               withCredentials([file(credentialsId: 'gcp-key', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
+               withCredentials([file(credentialsId: 'gcp-key-prj2', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
                    script {
                        echo 'Deploy to Google Cloud Run............'
                        sh '''
